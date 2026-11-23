@@ -39,6 +39,58 @@ class JobListingTest extends TestCase
         $this->assertSame(['PHP', 'Laravel'], $job->skills);
     }
 
+    public function test_a_job_can_be_added_with_an_optional_closing_date(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->post(route('jobs.store'), $this->jobData(['posted_at' => '2026-11-01', 'closes_at' => '2026-12-15']))
+            ->assertRedirect();
+
+        $job = JobListing::firstOrFail();
+        $this->assertSame('2026-12-15', $job->closes_at->toDateString());
+
+        $this->get(route('jobs.show', $job))->assertSee('15 Dec 2026');
+    }
+
+    public function test_closing_date_cannot_be_before_the_posted_date(): void
+    {
+        $this->actingAs(User::factory()->create())
+            ->post(route('jobs.store'), $this->jobData(['posted_at' => '2026-11-10', 'closes_at' => '2026-11-01']))
+            ->assertSessionHasErrors('closes_at');
+
+        $this->assertSame(0, JobListing::count());
+    }
+
+    public function test_a_saved_job_can_be_edited_and_is_rescored(): void
+    {
+        $user = User::factory()->create();
+        $user->skills()->create(['name' => 'PHP', 'level' => 3]);
+        $job = JobListing::factory()->create(['user_id' => $user->id, 'skills' => [], 'match_score' => 0]);
+
+        $this->actingAs($user)->get(route('jobs.edit', $job))->assertOk()->assertSee($job->title);
+
+        $this->put(route('jobs.update', $job), $this->jobData(['closes_at' => '2026-12-31']))
+            ->assertRedirect(route('jobs.show', $job));
+
+        $job->refresh();
+        $this->assertSame('Backend Developer', $job->title);
+        $this->assertSame('2026-12-31', $job->closes_at->toDateString());
+        $this->assertSame(['PHP', 'Docker'], $job->skills);
+        $this->assertSame(50, $job->match_score);
+    }
+
+    public function test_a_job_cannot_be_edited_into_a_duplicate_of_another_saved_job(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user)->post(route('jobs.store'), $this->jobData());
+        $other = JobListing::factory()->create(['user_id' => $user->id, 'title' => 'Designer']);
+
+        $this->put(route('jobs.update', $other), $this->jobData())->assertSessionHasErrors('title');
+
+        $this->assertSame('Designer', $other->fresh()->title);
+    }
+
     public function test_title_and_company_are_required(): void
     {
         $this->actingAs(User::factory()->create())
@@ -106,6 +158,8 @@ class JobListingTest extends TestCase
 
         $this->actingAs($intruder)->get(route('jobs.show', $job))->assertNotFound();
         $this->patch(route('jobs.expired', $job))->assertNotFound();
+        $this->get(route('jobs.edit', $job))->assertNotFound();
+        $this->put(route('jobs.update', $job), $this->jobData())->assertNotFound();
         $this->delete(route('jobs.destroy', $job))->assertNotFound();
 
         $this->assertDatabaseHas('job_listings', ['id' => $job->id, 'is_expired' => false]);

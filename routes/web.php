@@ -19,7 +19,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('jobs', JobListingController::class)
         ->parameters(['jobs' => 'listing'])
-        ->only(['index', 'create', 'store', 'show', 'destroy']);
+        ->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
     Route::patch('/jobs/{listing}/expired', [JobListingController::class, 'toggleExpired'])->name('jobs.expired');
 
     Route::resource('applications', ApplicationController::class)

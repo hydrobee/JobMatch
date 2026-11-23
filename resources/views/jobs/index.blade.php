@@ -78,6 +78,7 @@
                             {{ $job->company }}@if ($job->location) · {{ $job->location }}@endif
                             @if ($job->source) · {{ $job->source->name }}@endif
                             · {{ ($job->posted_at ?? $job->created_at)->diffForHumans() }}
+                            @if ($job->closes_at) · {{ $job->closes_at->lt(today()) ? 'Closed' : 'Closes' }} {{ $job->closes_at->format('j M Y') }}@endif
                         </div>
                         @if ($job->skills)
                             <div class="mt-2 flex flex-wrap gap-1.5">

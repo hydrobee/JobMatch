@@ -68,15 +68,7 @@ class JobListingController extends Controller
 
     public function store(Request $request, JobListingService $service): RedirectResponse
     {
-        $data = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'company' => ['required', 'string', 'max:255'],
-            'location' => ['nullable', 'string', 'max:255'],
-            'url' => ['nullable', 'url:http,https', 'max:2048'],
-            'salary' => ['nullable', 'string', 'max:255'],
-            'posted_at' => ['nullable', 'date'],
-            'description' => ['nullable', 'string', 'max:20000'],
-        ]);
+        $data = $request->validate($this->rules());
 
         [$listing, $created] = $service->store($request->user(), $data);
 
@@ -97,6 +89,22 @@ class JobListingController extends Controller
         ]);
     }
 
+    public function edit(JobListing $listing): View
+    {
+        $this->ensureOwned($listing);
+
+        return view('jobs.edit', ['listing' => $listing]);
+    }
+
+    public function update(Request $request, JobListing $listing, JobListingService $service): RedirectResponse
+    {
+        $this->ensureOwned($listing);
+
+        $service->update($listing, $request->validate($this->rules()));
+
+        return redirect()->route('jobs.show', $listing)->with('status', 'Job updated.');
+    }
+
     public function toggleExpired(JobListing $listing): RedirectResponse
     {
         $this->ensureOwned($listing);
@@ -113,5 +121,22 @@ class JobListingController extends Controller
         $listing->delete();
 
         return redirect()->route('jobs.index')->with('status', 'Job deleted.');
+    }
+
+    /**
+     * @return array<string, array<int, string>>
+     */
+    private function rules(): array
+    {
+        return [
+            'title' => ['required', 'string', 'max:255'],
+            'company' => ['required', 'string', 'max:255'],
+            'location' => ['nullable', 'string', 'max:255'],
+            'url' => ['nullable', 'url:http,https', 'max:2048'],
+            'salary' => ['nullable', 'string', 'max:255'],
+            'posted_at' => ['nullable', 'date'],
+            'closes_at' => ['nullable', 'date', 'after_or_equal:posted_at'],
+            'description' => ['nullable', 'string', 'max:20000'],
+        ];
     }
 }

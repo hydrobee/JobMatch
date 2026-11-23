@@ -22,6 +22,7 @@ class JobListing extends Model
         'url',
         'salary',
         'posted_at',
+        'closes_at',
         'fingerprint',
         'skills',
         'match_score',
@@ -33,6 +34,7 @@ class JobListing extends Model
         return [
             'skills' => 'array',
             'posted_at' => 'datetime',
+            'closes_at' => 'date',
             'match_score' => 'integer',
             'is_expired' => 'boolean',
         ];

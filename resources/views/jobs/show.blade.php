@@ -18,6 +18,7 @@
                         @if ($listing->location) · {{ $listing->location }}@endif
                         @if ($listing->source) · {{ $listing->source->name }}@endif
                         · {{ ($listing->posted_at ?? $listing->created_at)->format('j M Y') }}
+                        @if ($listing->closes_at) · {{ $listing->closes_at->lt(today()) ? 'Closed' : 'Closes' }} {{ $listing->closes_at->format('j M Y') }}@endif
                         @if ($listing->salary) · {{ $listing->salary }}@endif
                     </p>
                 </div>
@@ -108,11 +109,14 @@
                 @endif
             </div>
             <div class="card-footer justify-between">
-                <form method="POST" action="{{ route('jobs.expired', $listing) }}">
-                    @csrf
-                    @method('PATCH')
-                    <button type="submit" class="btn-ghost btn-sm">{{ $listing->is_expired ? 'Mark active' : 'Mark expired' }}</button>
-                </form>
+                <div class="flex items-center gap-1">
+                    <a href="{{ route('jobs.edit', $listing) }}" class="btn-ghost btn-sm">Edit</a>
+                    <form method="POST" action="{{ route('jobs.expired', $listing) }}">
+                        @csrf
+                        @method('PATCH')
+                        <button type="submit" class="btn-ghost btn-sm">{{ $listing->is_expired ? 'Mark active' : 'Mark expired' }}</button>
+                    </form>
+                </div>
 
                 <form method="POST" action="{{ route('jobs.destroy', $listing) }}" onsubmit="return confirm('Delete this job and its tracker entry?')">
                     @csrf
