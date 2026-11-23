@@ -59,4 +59,9 @@ class JobListing extends Model
     {
         return $this->hasOne(Resume::class);
     }
+
+    public function coverLetter(): HasOne
+    {
+        return $this->hasOne(CoverLetter::class);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ApplicationChannel;
 use App\Enums\ApplicationStage;
 use Database\Factories\ApplicationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,6 +19,7 @@ class Application extends Model
         'job_listing_id',
         'stage',
         'applied_at',
+        'applied_via',
         'contact_person',
         'resume_version',
         'notes',
@@ -29,6 +31,7 @@ class Application extends Model
         return [
             'stage' => ApplicationStage::class,
             'applied_at' => 'date',
+            'applied_via' => ApplicationChannel::class,
             'follow_up_at' => 'date',
         ];
     }

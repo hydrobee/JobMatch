@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\CoverLetterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JobListingController;
 use App\Http\Controllers\JobSourceController;
@@ -40,6 +41,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/resumes/{resume}/download', [ResumeController::class, 'download'])->name('resumes.download');
     Route::get('/resumes/{resume}/print', [ResumeController::class, 'print'])->name('resumes.print');
     Route::delete('/resumes/{resume}', [ResumeController::class, 'destroy'])->name('resumes.destroy');
+
+    Route::post('/jobs/{listing}/cover-letter', [CoverLetterController::class, 'generate'])->name('jobs.cover-letter');
+    Route::get('/cover-letters/{coverLetter}', [CoverLetterController::class, 'show'])->name('cover-letters.show');
+    Route::put('/cover-letters/{coverLetter}', [CoverLetterController::class, 'update'])->name('cover-letters.update');
+    Route::get('/cover-letters/{coverLetter}/download', [CoverLetterController::class, 'download'])->name('cover-letters.download');
+    Route::get('/cover-letters/{coverLetter}/print', [CoverLetterController::class, 'print'])->name('cover-letters.print');
+    Route::delete('/cover-letters/{coverLetter}', [CoverLetterController::class, 'destroy'])->name('cover-letters.destroy');
 
     Route::get('/preferences', [PreferencesController::class, 'edit'])->name('preferences.edit');
     Route::patch('/preferences', [PreferencesController::class, 'update'])->name('preferences.update');

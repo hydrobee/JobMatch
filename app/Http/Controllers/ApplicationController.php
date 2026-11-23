@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ApplicationChannel;
 use App\Enums\ApplicationStage;
 use App\Http\Controllers\Concerns\EnsuresOwnership;
 use App\Models\Application;
@@ -63,6 +64,7 @@ class ApplicationController extends Controller
         return view('applications.show', [
             'application' => $application->load(['jobListing', 'stageChanges']),
             'stages' => ApplicationStage::cases(),
+            'channels' => ApplicationChannel::cases(),
         ]);
     }
 
@@ -73,6 +75,7 @@ class ApplicationController extends Controller
         $data = $request->validate([
             'stage' => ['required', Rule::enum(ApplicationStage::class)],
             'applied_at' => ['nullable', 'date'],
+            'applied_via' => ['nullable', Rule::enum(ApplicationChannel::class)],
             'follow_up_at' => ['nullable', 'date'],
             'contact_person' => ['nullable', 'string', 'max:255'],
             'resume_version' => ['nullable', 'string', 'max:255'],
@@ -81,6 +84,7 @@ class ApplicationController extends Controller
 
         $application->fill([
             'applied_at' => $data['applied_at'] ?? null,
+            'applied_via' => $data['applied_via'] ?? null,
             'follow_up_at' => $data['follow_up_at'] ?? null,
             'contact_person' => $data['contact_person'] ?? null,
             'resume_version' => $data['resume_version'] ?? null,

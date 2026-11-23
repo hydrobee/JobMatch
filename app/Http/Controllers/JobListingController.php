@@ -84,7 +84,7 @@ class JobListingController extends Controller
         $skillNames = $request->user()->skills()->pluck('name')->all();
 
         return view('jobs.show', [
-            'listing' => $listing->load(['source', 'application', 'tailoredResume']),
+            'listing' => $listing->load(['source', 'application', 'tailoredResume', 'coverLetter']),
             'match' => $matcher->match($listing->skills ?? [], $skillNames),
         ]);
     }

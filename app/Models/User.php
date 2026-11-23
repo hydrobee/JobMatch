@@ -69,6 +69,11 @@ class User extends Authenticatable
         return $this->hasMany(Resume::class);
     }
 
+    public function coverLetters(): HasMany
+    {
+        return $this->hasMany(CoverLetter::class);
+    }
+
     public function masterResume(): HasOne
     {
         return $this->hasOne(Resume::class)->whereNull('job_listing_id');

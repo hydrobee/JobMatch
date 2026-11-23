@@ -101,6 +101,15 @@
                     </form>
                 @endif
 
+                @if ($listing->coverLetter)
+                    <a href="{{ route('cover-letters.show', $listing->coverLetter) }}" class="btn-secondary w-full">View cover letter</a>
+                @else
+                    <form method="POST" action="{{ route('jobs.cover-letter', $listing) }}">
+                        @csrf
+                        <x-secondary-button type="submit" class="w-full">Write a cover letter</x-secondary-button>
+                    </form>
+                @endif
+
                 @if ($listing->url)
                     <a href="{{ $listing->url }}" target="_blank" rel="noopener noreferrer" class="btn-secondary w-full">
                         Open original posting

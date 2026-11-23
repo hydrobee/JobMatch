@@ -47,11 +47,21 @@
                         <x-input-error :messages="$errors->get('applied_at')" class="mt-2" />
                     </div>
                     <div>
+                        <x-input-label for="applied_via" value="Applied via" />
+                        <select id="applied_via" name="applied_via" class="input mt-1.5 w-full">
+                            <option value="">Not set</option>
+                            @foreach ($channels as $channel)
+                                <option value="{{ $channel->value }}" @selected(old('applied_via', $application->applied_via?->value) === $channel->value)>{{ $channel->label() }}</option>
+                            @endforeach
+                        </select>
+                        <x-input-error :messages="$errors->get('applied_via')" class="mt-2" />
+                    </div>
+                    <div>
                         <x-input-label for="follow_up_at" value="Follow up on" />
                         <x-text-input id="follow_up_at" name="follow_up_at" type="date" class="mt-1.5 w-full" :value="old('follow_up_at', $application->follow_up_at?->toDateString())" />
                         <x-input-error :messages="$errors->get('follow_up_at')" class="mt-2" />
                     </div>
-                    <div class="md:col-span-2">
+                    <div>
                         <x-input-label for="resume_version" value="Resume version used" />
                         <x-text-input id="resume_version" name="resume_version" class="mt-1.5 w-full" :value="old('resume_version', $application->resume_version)" placeholder="e.g. resume-2026-11-backend.pdf" />
                     </div>

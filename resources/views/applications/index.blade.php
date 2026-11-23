@@ -25,7 +25,7 @@
                         <div class="card p-4">
                             <a href="{{ route('applications.show', $app) }}" class="group block">
                                 <div class="text-sm font-medium text-slate-900 group-hover:text-indigo-600 dark:text-white dark:group-hover:text-indigo-400">{{ $app->jobListing->title }}</div>
-                                <div class="mt-0.5 text-xs text-muted">{{ $app->jobListing->company }}</div>
+                                <div class="mt-0.5 text-xs text-muted">{{ $app->jobListing->company }}@if ($app->applied_via) · via {{ $app->applied_via->label() }}@endif</div>
                             </a>
                             @if ($app->follow_up_at)
                                 <div class="mt-2">

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\ApplicationChannel;
 use App\Enums\ApplicationStage;
 use App\Models\Application;
 use App\Models\JobListing;
@@ -97,6 +98,7 @@ class ApplicationTrackerTest extends TestCase
             'stage' => 'interview',
             'contact_person' => 'Aisha',
             'resume_version' => 'backend-v2',
+            'applied_via' => 'jobstreet',
             'notes' => 'Phone screen went well.',
             'follow_up_at' => '2026-12-01',
         ])->assertRedirect();
@@ -105,7 +107,20 @@ class ApplicationTrackerTest extends TestCase
         $this->assertSame(ApplicationStage::Interview, $application->stage);
         $this->assertSame('Aisha', $application->contact_person);
         $this->assertSame('backend-v2', $application->resume_version);
+        $this->assertSame(ApplicationChannel::JobStreet, $application->applied_via);
         $this->assertSame('2026-12-01', $application->follow_up_at->toDateString());
+    }
+
+    public function test_applied_via_must_be_a_known_channel(): void
+    {
+        $user = User::factory()->create();
+        $application = Application::factory()->create(['user_id' => $user->id]);
+
+        $this->actingAs($user)
+            ->patch(route('applications.update', $application), ['stage' => 'applied', 'applied_via' => 'carrier-pigeon'])
+            ->assertSessionHasErrors('applied_via');
+
+        $this->assertNull($application->fresh()->applied_via);
     }
 
     public function test_other_users_applications_are_off_limits(): void
