@@ -1,0 +1,200 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html {
+        @apply antialiased;
+        color-scheme: light;
+    }
+
+    html.dark {
+        color-scheme: dark;
+    }
+
+    body {
+        @apply bg-slate-50 font-sans text-slate-900 dark:bg-slate-950 dark:text-slate-100;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+}
+
+@layer components {
+    /* Page structure */
+    .page-header {
+        @apply flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between;
+    }
+
+    .page-title {
+        @apply text-2xl font-semibold tracking-tight text-slate-900 dark:text-white;
+    }
+
+    .page-description {
+        @apply mt-1 text-sm text-slate-500 dark:text-slate-400;
+    }
+
+    .page-actions {
+        @apply flex flex-wrap items-center gap-2;
+    }
+
+    /* Cards */
+    .card {
+        @apply rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900;
+    }
+
+    .card-header {
+        @apply flex items-center justify-between gap-4 border-b border-slate-200 px-6 py-4 dark:border-slate-800;
+    }
+
+    .card-body {
+        @apply p-6;
+    }
+
+    .card-footer {
+        @apply flex flex-wrap items-center justify-end gap-2 rounded-b-xl border-t border-slate-200 bg-slate-50 px-6 py-4 dark:border-slate-800 dark:bg-slate-900/60;
+    }
+
+    .card-title {
+        @apply text-base font-semibold text-slate-900 dark:text-white;
+    }
+
+    .card-description {
+        @apply mt-1 text-sm text-slate-500 dark:text-slate-400;
+    }
+
+    /* Buttons: every size shares one height so buttons line up with inputs */
+    .btn {
+        @apply inline-flex h-10 shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-lg px-4 text-sm font-medium transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-offset-slate-900;
+    }
+
+    .btn-primary {
+        @apply btn bg-indigo-600 text-white shadow-sm hover:bg-indigo-500 active:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400;
+    }
+
+    .btn-secondary {
+        @apply btn border border-slate-300 bg-white text-slate-700 shadow-sm hover:bg-slate-50 hover:text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white;
+    }
+
+    .btn-danger {
+        @apply btn bg-red-600 text-white shadow-sm hover:bg-red-500 active:bg-red-700 focus-visible:ring-red-500;
+    }
+
+    .btn-ghost {
+        @apply btn text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white;
+    }
+
+    .btn-ghost-danger {
+        @apply btn text-red-600 hover:bg-red-50 hover:text-red-700 focus-visible:ring-red-500 dark:text-red-400 dark:hover:bg-red-500/10 dark:hover:text-red-300;
+    }
+
+    .btn-sm {
+        @apply h-8 gap-1.5 rounded-md px-3 text-xs;
+    }
+
+    .btn-icon {
+        @apply btn h-10 w-10 px-0;
+    }
+
+    /* Forms */
+    .label {
+        @apply block text-sm font-medium text-slate-700 dark:text-slate-300;
+    }
+
+    .hint {
+        @apply mt-1.5 text-xs text-slate-500 dark:text-slate-400;
+    }
+
+    .input {
+        @apply block h-10 rounded-lg border-slate-300 bg-white px-3 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-indigo-500 focus:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-indigo-400 dark:focus:ring-indigo-400;
+    }
+
+    select.input {
+        @apply pr-10;
+    }
+
+    .input-sm {
+        @apply h-8 rounded-md py-0 pl-2.5 text-xs;
+    }
+
+    select.input-sm {
+        @apply pr-8;
+    }
+
+    .textarea {
+        @apply block w-full rounded-lg border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-indigo-500 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-indigo-400 dark:focus:ring-indigo-400;
+    }
+
+    .checkbox {
+        @apply h-4 w-4 rounded border-slate-300 text-indigo-600 shadow-sm focus:ring-indigo-500 focus:ring-offset-0 dark:border-slate-600 dark:bg-slate-900 dark:checked:bg-indigo-500;
+    }
+
+    .file-input {
+        @apply block w-full text-sm text-slate-600 file:mr-4 file:h-10 file:cursor-pointer file:rounded-lg file:border-0 file:bg-slate-100 file:px-4 file:text-sm file:font-medium file:text-slate-700 hover:file:bg-slate-200 dark:text-slate-400 dark:file:bg-slate-800 dark:file:text-slate-200 dark:hover:file:bg-slate-700;
+    }
+
+    /* Badges */
+    .badge {
+        @apply inline-flex items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset;
+    }
+
+    .badge-success {
+        @apply badge bg-emerald-50 text-emerald-700 ring-emerald-600/20 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20;
+    }
+
+    .badge-warning {
+        @apply badge bg-amber-50 text-amber-700 ring-amber-600/20 dark:bg-amber-500/10 dark:text-amber-400 dark:ring-amber-500/20;
+    }
+
+    .badge-danger {
+        @apply badge bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-500/10 dark:text-red-400 dark:ring-red-500/20;
+    }
+
+    .badge-info {
+        @apply badge bg-indigo-50 text-indigo-700 ring-indigo-600/20 dark:bg-indigo-500/10 dark:text-indigo-300 dark:ring-indigo-500/20;
+    }
+
+    .badge-neutral {
+        @apply badge bg-slate-100 text-slate-600 ring-slate-500/20 dark:bg-slate-800 dark:text-slate-300 dark:ring-slate-700;
+    }
+
+    /* Must stay after every .badge-* variant so it overrides their nowrap. For badges holding long, free-form text (AI gaps, skills): let them wrap instead of overflowing */
+    .badge-wrap {
+        @apply max-w-full whitespace-normal break-words rounded-2xl text-left;
+    }
+
+    /* Lists */
+    .list-divided {
+        @apply divide-y divide-slate-200 dark:divide-slate-800;
+    }
+
+    .list-row {
+        @apply flex items-center justify-between gap-4 px-6 py-4;
+    }
+
+    .list-row-link {
+        @apply list-row transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50;
+    }
+
+    .empty-state {
+        @apply px-6 py-12 text-center text-sm text-slate-500 dark:text-slate-400;
+    }
+
+    /* Text */
+    .link {
+        @apply font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300;
+    }
+
+    .text-muted {
+        @apply text-slate-500 dark:text-slate-400;
+    }
+
+    .section-label {
+        @apply text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400;
+    }
+
+    .stat-value {
+        @apply text-2xl font-semibold tracking-tight text-slate-900 dark:text-white;
+    }
+}
